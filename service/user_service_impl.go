@@ -32,6 +32,6 @@ func (u *UserServiceImpl) Login(user domain.User) (domain.User , error){
 		return foundUser, nil
 	} else{
 		tx.Rollback()
-		return nil, errors.New("Invalid Login Credentials")
+		return domain.User{}, errors.New("invalid login credentials")
 	}
 }

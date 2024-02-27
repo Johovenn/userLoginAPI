@@ -35,6 +35,7 @@ func (u *UserControllerImpl) Login(w http.ResponseWriter, r *http.Request, param
 	response := response.Response{
 		Code:   200,
 		Status: "Success Login",
+		Data: user,
 	}
 
 	helper.WriteResponse(w, response)
