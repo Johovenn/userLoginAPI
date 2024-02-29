@@ -25,18 +25,24 @@ func (u *UserControllerImpl) Login(w http.ResponseWriter, r *http.Request, param
 	var user domain.User
 	helper.ReadFromRequestBody(r, &user)
 
-	user, err := u.service.Login(user)
+	user, err, success := u.service.Login(user)
 
 	if err != nil {
 		w.WriteHeader(http.StatusInternalServerError)
 		fmt.Fprint(w, "Internal Server Error")
 	}
 
-	response := response.Response{
-		Code:   200,
-		Status: "Success Login",
-		Data: user,
+	var res response.LoginResponse
+
+	if success {
+		res.Code = 200
+		res.Status = "Success Login"
+		res.Data = user
+	} else {
+		res.Code = 401
+		res.Status = "Invalid username or password"
+		res.Data = nil
 	}
 
-	helper.WriteResponse(w, response)
+	helper.WriteResponse(w, res)
 }
